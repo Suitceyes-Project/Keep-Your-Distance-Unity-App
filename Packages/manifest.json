@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.aci.unitytools": "https://github.com/AffectiveCognitiveInstitute/aci-unity-tools.git#1.0.26",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.0",
@@ -40,5 +41,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.aci.unitytools": {
+      "hash": "f8649c17bc600b2c42000379152e6c350a98d1b7",
+      "revision": "1.0.26"
+    }
   }
 }
