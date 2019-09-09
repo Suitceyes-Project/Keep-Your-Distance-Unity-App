@@ -30,7 +30,9 @@ namespace Aci.KeepYourDistance.Client
             m_Client.OnReconnected += OnReconnected;           
 
             m_Client.ConnectionMetadata = UserName;
-            m_Client.HeartbeatActive = true;
+            m_Client.HeartbeatActive = false;
+
+            m_Client.ClusterUrl = Endpoint;
             m_Client.Connect(m_ApplicationKey, m_AuthorizationToken);
         }
 
@@ -56,6 +58,7 @@ namespace Aci.KeepYourDistance.Client
 
         public void Dispose()
         {
+            m_Client.Disconnect();
             m_Client.OnConnected -= OnConnected;
             m_Client.OnDisconnected -= OnDisconnected;
             m_Client.OnReconnected -= OnReconnecting;
