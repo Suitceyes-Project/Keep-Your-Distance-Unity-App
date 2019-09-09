@@ -10,9 +10,9 @@ namespace Realtime.Ortc
     {
         static bool isConfigured;
 
-#if UNITY_5
-        [RuntimeInitializeOnLoadMethod]
-#endif
+//#if UNITY_5
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+//#endif
         internal static void ConfigureOrtc()
         {
             if (isConfigured)
