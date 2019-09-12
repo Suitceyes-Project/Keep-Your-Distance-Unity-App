@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 15313076}
   - component: {fileID: 15313075}
   - component: {fileID: 15313077}
+  - component: {fileID: 15313078}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -187,3 +188,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ApplicationKey: Rb7lul
   m_AuthorizationToken: gfiKXWsXCIeo
+--- !u!114 &15313078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15313074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcbaffdd641c4fa4f89c973b7f59f727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
