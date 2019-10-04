@@ -1,4 +1,5 @@
 ﻿using Realtime.Ortc;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         [SerializeField]
         private ScrollRect m_ScrollRect;
+        private List<ConsoleMessageViewController> m_Messages = new List<ConsoleMessageViewController>();
 
         [Zenject.Inject]
         private void Construct(IOrtcClient ortcClient, ConsoleMessageViewController.Factory factory)
@@ -42,8 +44,9 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         private void OnMessageReceived(string channel, string message)
         {
-            m_Factory.Create(message);
-            m_ScrollRect.verticalNormalizedPosition = 1f;
+            ConsoleMessageViewController vc = m_Factory.Create(message);
+            m_Messages.Add(vc);
+            m_ScrollRect.verticalNormalizedPosition = 0f;
         }
 
         private void OnSubscribedToChannel(string channel)
@@ -59,6 +62,14 @@ namespace Aci.KeepYourDistance.ViewControllers
         public void StopApplication()
         {
             m_OrtcClient.Send(ChannelIn, "Stop");
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < m_Messages.Count; i++)
+                Destroy(m_Messages[i].gameObject);
+
+            m_Messages.Clear();
         }
     }
 }
