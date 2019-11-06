@@ -54,6 +54,11 @@ namespace Aci.KeepYourDistance.ViewControllers
             Debug.Log($"Successfully subscribed to channel: {channel}");
         }
 
+        public void CatchThief()
+        {
+            m_OrtcClient.Send(ChannelIn, "catch_thief");
+        }
+
         public void StartApplication()
         {
             m_OrtcClient.Send(ChannelIn, "Start");
