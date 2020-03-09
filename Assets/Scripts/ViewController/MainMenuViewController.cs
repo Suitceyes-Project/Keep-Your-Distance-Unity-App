@@ -1,7 +1,9 @@
-﻿using Realtime.Ortc;
+﻿using Aci.KeepYourDistance.Payloads;
+using Realtime.Ortc;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 namespace Aci.KeepYourDistance.ViewControllers
 {
@@ -9,6 +11,7 @@ namespace Aci.KeepYourDistance.ViewControllers
     {
         private const string ChannelIn = "ACI_KYD";
         private const string ChannelOut = "ACI_KYD_OUT";
+        private const string Me = "Smartphone";
 
         private IOrtcClient m_OrtcClient;
         private ConsoleMessageViewController.Factory m_Factory;
@@ -26,6 +29,7 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         private void OnEnable()
         {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
             m_OrtcClient.OnConnected += OnConnected;
             m_OrtcClient.OnSubscribed += OnSubscribedToChannel;
         }
@@ -44,7 +48,12 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         private void OnMessageReceived(string channel, string message)
         {
-            ConsoleMessageViewController vc = m_Factory.Create(message);
+            AddMessageToConsole("Pi", message);
+        }
+
+        private void AddMessageToConsole(string sender, string message)
+        {
+            ConsoleMessageViewController vc = m_Factory.Create(sender, message);
             m_Messages.Add(vc);
             m_ScrollRect.verticalNormalizedPosition = 0f;
         }
@@ -56,16 +65,31 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         public void CatchThief()
         {
-            m_OrtcClient.Send(ChannelIn, "catch_thief");
+            AddMessageToConsole(Me, "Sending catch thief signal.");
+            //m_OrtcClient.Send(ChannelIn, "catch_thief");
+            
+            string json = JsonConvert.SerializeObject(new CatchThiefPayload());
+            m_OrtcClient.Send(ChannelIn, json);
+        }
+
+        public void SetProgress(int progress)
+        {
+            AddMessageToConsole(Me, $"Setting progress to: {progress} %.");
+            m_OrtcClient.Send(ChannelIn, JsonConvert.SerializeObject(new SetProgressPayload()
+            {
+                Value = progress
+            }));
         }
 
         public void StartApplication()
         {
+            AddMessageToConsole(Me, "Sending start application signal.");
             m_OrtcClient.Send(ChannelIn, "Start");
         }
 
         public void StopApplication()
         {
+            AddMessageToConsole(Me, "Sending stop application signal.");
             m_OrtcClient.Send(ChannelIn, "Stop");
         }
 

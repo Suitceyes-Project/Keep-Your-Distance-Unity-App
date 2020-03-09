@@ -13,7 +13,7 @@ namespace Aci.KeepYourDistance.ViewControllers
 
         public override void InstallBindings()
         {
-            Container.BindFactory<string, ConsoleMessageViewController, ConsoleMessageViewController.Factory>().
+            Container.BindFactory<string, string, ConsoleMessageViewController, ConsoleMessageViewController.Factory>().
                       FromComponentInNewPrefab(m_MessagePrefab).UnderTransform(m_ParentTransform);
         }
     }

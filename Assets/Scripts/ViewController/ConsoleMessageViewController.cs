@@ -11,11 +11,11 @@ namespace Aci.KeepYourDistance.ViewControllers
         private TextMeshProUGUI m_Label;
         
         [Zenject.Inject]
-        public void Initialize(string message)
+        public void Initialize(string sender, string message)
         {
-            m_Label.text = $"{DateTime.Now.ToString("HH:mm:ss")}: {message}";
+            m_Label.text = $"{sender} ({DateTime.Now.ToString("HH:mm:ss")}): {message}";
         }
 
-        public class Factory : PlaceholderFactory<string, ConsoleMessageViewController> { }
+        public class Factory : PlaceholderFactory<string, string, ConsoleMessageViewController> { }
     }
 }
