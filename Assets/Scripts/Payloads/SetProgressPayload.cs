@@ -4,6 +4,5 @@
     public class SetProgressPayload : IPayload
     {
         public int Value { get; set; }
-        public string FunctionName => "SetProgress";
     }
 }

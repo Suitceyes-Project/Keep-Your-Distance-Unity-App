@@ -2,6 +2,5 @@
 {
     public interface IPayload
     {
-        string FunctionName { get; }
     }
 }
