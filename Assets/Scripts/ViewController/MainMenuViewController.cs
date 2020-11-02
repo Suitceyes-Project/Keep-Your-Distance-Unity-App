@@ -58,10 +58,8 @@ namespace Aci.KeepYourDistance.ViewControllers
         public void CatchThief()
         {
             AddMessageToConsole(Me, "Sending catch thief signal.");
-            //m_OrtcClient.Send(ChannelIn, "catch_thief");
             
-            string json = JsonConvert.SerializeObject(new CatchThiefPayload());
-            m_MqttClient.PublishAsync("suitceyes/kyd/CatchThief", json);
+            m_MqttClient.PublishAsync("suitceyes/kyd/CatchThief");
         }
 
         public void SetProgress(int progress)
