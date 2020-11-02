@@ -1,19 +1,19 @@
 ﻿using Aci.KeepYourDistance.Payloads;
-using Realtime.Ortc;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using System;
+using MQTTnet;
+using Aci.KeepYourDistance.Client;
 
 namespace Aci.KeepYourDistance.ViewControllers
 {
     public class MainMenuViewController : MonoBehaviour
     {
-        private const string ChannelIn = "ACI_KYD";
-        private const string ChannelOut = "ACI_KYD_OUT";
         private const string Me = "Smartphone";
 
-        private IOrtcClient m_OrtcClient;
+        private IMqttClientService m_MqttClient;
         private ConsoleMessageViewController.Factory m_Factory;
 
         [SerializeField]
@@ -21,34 +21,26 @@ namespace Aci.KeepYourDistance.ViewControllers
         private List<ConsoleMessageViewController> m_Messages = new List<ConsoleMessageViewController>();
 
         [Zenject.Inject]
-        private void Construct(IOrtcClient ortcClient, ConsoleMessageViewController.Factory factory)
+        private void Construct(IMqttClientService mqttClientService, ConsoleMessageViewController.Factory factory)
         {
-            m_OrtcClient = ortcClient;
+            m_MqttClient = mqttClientService;
             m_Factory = factory;
         }
 
         private void OnEnable()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-            m_OrtcClient.OnConnected += OnConnected;
-            m_OrtcClient.OnSubscribed += OnSubscribedToChannel;
-        }
-
-        private void OnConnected()
-        {
-            m_OrtcClient.Subscribe(ChannelOut, true, OnMessageReceived);
+            m_MqttClient.AddMessageHandler("suitceyes/kyd/debug", OnDebugMessageReceived);
         }
 
         private void OnDisable()
         {
-            m_OrtcClient.OnConnected -= OnConnected;
-            m_OrtcClient.OnSubscribed -= OnSubscribedToChannel;
-            m_OrtcClient.Unsubscribe(ChannelOut);
+            m_MqttClient.RemoveMessageHandler("suitceyes/kyd/debug", OnDebugMessageReceived);
         }
 
-        private void OnMessageReceived(string channel, string message)
+        private void OnDebugMessageReceived(MqttApplicationMessage obj)
         {
-            AddMessageToConsole("Pi", message);
+            AddMessageToConsole("Pi", Convert.ToBase64String(obj.Payload));
         }
 
         private void AddMessageToConsole(string sender, string message)
@@ -69,13 +61,13 @@ namespace Aci.KeepYourDistance.ViewControllers
             //m_OrtcClient.Send(ChannelIn, "catch_thief");
             
             string json = JsonConvert.SerializeObject(new CatchThiefPayload());
-            m_OrtcClient.Send(ChannelIn, json);
+            m_MqttClient.PublishAsync("suitceyes/kyd/CatchThief", json);
         }
 
         public void SetProgress(int progress)
         {
             AddMessageToConsole(Me, $"Setting progress to: {progress} %.");
-            m_OrtcClient.Send(ChannelIn, JsonConvert.SerializeObject(new SetProgressPayload()
+            m_MqttClient.PublishAsync("suitceyes/kyd/SetProgress", JsonConvert.SerializeObject(new SetProgressPayload()
             {
                 Value = progress
             }));
@@ -84,13 +76,13 @@ namespace Aci.KeepYourDistance.ViewControllers
         public void StartApplication()
         {
             AddMessageToConsole(Me, "Sending start application signal.");
-            m_OrtcClient.Send(ChannelIn, "Start");
+            m_MqttClient.PublishAsync("suitceyes/kyd/start");
         }
 
         public void StopApplication()
         {
             AddMessageToConsole(Me, "Sending stop application signal.");
-            m_OrtcClient.Send(ChannelIn, "Stop");
+            m_MqttClient.PublishAsync("suitceyes/kyd/stop");
         }
 
         public void Clear()
