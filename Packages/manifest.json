@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.aci.unitytools": "https://github.com/AffectiveCognitiveInstitute/aci-unity-tools.git#1.0.26",
-    "com.aria.unity.nuget": "ssh://git@github.com/TK-Aria/NuGetForUnity.git",
+    "com.coffee.upm-git-extension": "https://github.com/mob-sakai/UpmGitExtension.git",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",

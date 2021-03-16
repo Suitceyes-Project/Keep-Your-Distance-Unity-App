@@ -16,14 +16,14 @@ namespace Aci.KeepYourDistance.Client
     {
         private IMqttClient _mqttClient;
         private IMqttClientOptions _options;
-        private TopicFilter _topicFilter;
+        private MqttTopicFilter _topicFilter;
         private Dictionary<string, Action<MqttApplicationMessage>> _handlers = new Dictionary<string, Action<MqttApplicationMessage>>();
 
         public MqttClientService(IMqttClient mqttClient, IMqttClientOptions options, string[] topics)
         {
             _mqttClient = mqttClient;
             _options = options;
-            TopicFilterBuilder topicFilterBuilder = new TopicFilterBuilder();
+            MqttTopicFilterBuilder topicFilterBuilder = new MqttTopicFilterBuilder();
             for (int i = 0; i < topics.Length; i++)
                 topicFilterBuilder.WithTopic(topics[i]);
             _topicFilter = topicFilterBuilder.Build();
