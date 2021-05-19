@@ -1,5 +1,5 @@
 # Keep Your Distance Unity App
-This is a Wizard of Oz Unity application used in conjuction with the [Keep Your Distance](https://github.com/AffectiveCognitiveInstitute/police-chase) game.
+This is a Wizard of Oz Unity application used in conjuction with the [Keep Your Distance](https://github.com/suitceyes-project/Keep-Your-Distance) game.
 
 ## Prequisites
 * Unity 2019.4.10f1
